@@ -2,8 +2,8 @@ import bpy
 import textwrap
 import re
 
-__version__ = '0.0.1'
-__author__ = 'Patrick W. Crawford <moo-ack@theduckcow.com>'
+__version__ = '0.0.2'
+__author__ = 'Patrick W. Crawford <moo-ack@theduckcow.com>, Loïc Dautry'
 
 
 class BlenderMarkdownClass():
@@ -12,7 +12,7 @@ class BlenderMarkdownClass():
 		self.wrap = 70
 
 	def dpi_scale(self):
-		return bpy.context.user_preferences.system.pixel_size
+		return bpy.context.preferences.system.pixel_size
 
 	# removes bold (**b** -> b), markdown links ([text](link.com) -> text)
 	def strip_formatting(raw):
@@ -89,11 +89,11 @@ class BlenderMarkdownClass():
 				spl = sub_lns.split("\n")
 				for s in spl:
 					row = c.row()
-					row.label(s)
+					row.label(text=s)
 		
 		row = c.row()
 		row.scale_y = 0.5
-		row.label("")
+		row.label(text="")
 
 	def display_headers(self,text,row):
 		c = row
@@ -123,35 +123,35 @@ class BlenderMarkdownClass():
 		
 		row = c.row()
 		row.scale_y = 0.5
-		row.label("")
+		row.label(text="")
 		
 		row = c.row()
 		row.scale_y = 0.5
 		if header_level==1:
-			row.label("."*1000)
+			row.label(text="."*1000)
 		elif header_level <4:
-			row.label("."*150)
+			row.label(text="."*150)
 		else:
-			row.label("."*150)
+			row.label(text="."*150)
 		
 		sub_lns = sub_lns.split("\n")
 		row = c.row()
-		row.label(sub_lns[0], icon="RIGHTARROW")
+		row.label(text=sub_lns[0], icon="RIGHTARROW")
 		if len(sub_lns)>1:
 			for s in sub_lns[1:]:
 				row = c.row()
-				row.label(s, icon="RIGHTARROW")
+				row.label(text=s, icon="RIGHTARROW")
 		
 		row = c.row()
 		row.scale_y = 0.2
 		if header_level==1:
-			row.label("."*1000)
+			row.label(text="."*1000)
 		elif header_level<4:
-			row.label("."*150)
+			row.label(text="."*150)
 		
 		row = c.row()
 		row.scale_y = 0.5
-		row.label("")
+		row.label(text="")
 	
 	def display_links_as_icons(self, text, row):
 
@@ -173,18 +173,18 @@ class BlenderMarkdownClass():
 		# now draw leading indents (ie sums of 2 spaces in a row)
 		row = c.row()
 		for i in range(indent):
-			row.label("",icon="BLANK1")	
+			row.label(text="",icon="BLANK1")	
 		
 		# draw first bullet
 		sub_lns = textwrap.fill(ln.lstrip()[2:], self.wrap-2*indent-2)
 		spl = sub_lns.split("\n")
-		row.label(spl[0],icon="DOT")
+		row.label(text=spl[0],icon="DOT")
 		if len(spl)!=1:
 			for s in spl[1:]:
 				row = c.row()
 				for i in range(indent):
-					row.label("",icon="BLANK1")	
-				row.label(s,icon="BLANK1")
+					row.label(text="",icon="BLANK1")	
+				row.label(text=s,icon="BLANK1")
 
 # instance for importing
 BlenderMarkdown = BlenderMarkdownClass()
